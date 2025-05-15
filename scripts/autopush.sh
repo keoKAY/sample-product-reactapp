@@ -6,4 +6,4 @@ if [ -z "$message" ]; then
 fi
 git add . 
 git commit -m "$message"
-git push origin $(git branch --show-current)
+git push origin "$(git branch --show-current)"

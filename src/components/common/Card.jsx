@@ -1,24 +1,52 @@
-import React from 'react'
+import { useState } from 'react'
+import './Card.css'
 
-const Card = ({ title, description, image , price}) => {
+const priceFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+})
+
+const formatPrice = (price) => {
+    const value = Number(price)
+    return Number.isFinite(value) ? priceFormatter.format(value) : price
+}
+
+const Card = ({ title, description, image, price }) => {
+    const [imageFailed, setImageFailed] = useState(false)
+    const showImage = image && !imageFailed
+
     return (
-        <div className='bg-light p-3 mx-2 rounded shadow-lg card-hover' >
-            <div className="d-flex gap-3">
-                <img 
-                style={{ width: '200px', height: '200px' }}
-                className='rounded img-fluid img-thumbnail ' 
-                src={image} alt=""
-                onError={(e)=>{
-                    e.target.onerror = null; 
-                    e.target.src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRys2dSP963S7kuiTi0IdXOdbbcF9T2N4KMwg&s"
-                }}
-                />
-                <div> 
-                    <h2>{price}$</h2>
-                    <h4>{title} </h4>
-                    <p>{description} </p></div>
+        <article className="product-card">
+            <div className="product-card__media">
+                {showImage ? (
+                    <img
+                        className="product-card__image"
+                        src={image}
+                        alt={title}
+                        loading="lazy"
+                        onError={() => setImageFailed(true)}
+                    />
+                ) : (
+                    <div className="product-card__placeholder" aria-hidden="true">
+                        {title?.trim()?.charAt(0)?.toUpperCase() || '?'}
+                    </div>
+                )}
+                {price !== undefined && price !== '' && (
+                    <span className="product-card__price">{formatPrice(price)}</span>
+                )}
             </div>
-        </div>
+
+            <div className="product-card__body">
+                <h3 className="product-card__title" title={title}>{title}</h3>
+                {description ? (
+                    <p className="product-card__description">{description}</p>
+                ) : (
+                    <p className="product-card__description product-card__description--empty">
+                        No description provided.
+                    </p>
+                )}
+            </div>
+        </article>
     )
 }
 

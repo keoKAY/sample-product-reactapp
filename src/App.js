@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from './components/common/Card';
 
-const API_URL = 'http://localhost:8080/api/v1/products';
+//const API_URL = 'http://localhost:8080/api/v1/products';
+const API_URL = '/api/v1/products';
 
 const EMPTY_PRODUCT = {
   title: '',
